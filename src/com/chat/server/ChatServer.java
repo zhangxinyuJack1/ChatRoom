@@ -186,7 +186,7 @@ public class ChatServer implements Runnable{
     }  
 	
 	public static void main(String[] args) {
-		ChatServer chatServer = new ChatServer(66319);
+		ChatServer chatServer = new ChatServer(19999);
 		new Thread(chatServer).start();//线程一直监听
 	}
 }
