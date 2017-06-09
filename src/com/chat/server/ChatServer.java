@@ -51,7 +51,7 @@ public class ChatServer implements Runnable{
     		//设置为非阻塞
     		serverSocketChannel.configureBlocking(false);
     		//将serverSocketChannel注册到选择器, 指定其行为 "等待接受连接OP_ACCEPT"
-    		serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+    		serverKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
     		printInfo("waiting connect....");  
          } catch (IOException e) {  
              e.printStackTrace();  
@@ -61,7 +61,7 @@ public class ChatServer implements Runnable{
 	@Override
 	public void run() {
 		try {
-			//轮询选择器的 选择键 TODO ????
+			//服务器监听启动状态
 			while (isRun) {
 				//选择一组已经准备进行IO操作通道的key,等于1时候表示有这样的key
 //				int n = selector.select(); 这个方法是阻塞的 会一直等到有通道兴趣发生
@@ -76,9 +76,10 @@ public class ChatServer implements Runnable{
 						if (key.isAcceptable()) {
 							//remove掉，否则之后新连接会被阻塞
 							iter.remove();
-							//活动key对应的通道
+							//*******************获得key对应的通道********************************************
 							ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key.channel();
-							//接受新的连接返回和客户端对等的套接字通道
+							//下一步是将新连接的 SocketChannel 配置为非阻塞的。而且由于接受这个连接的目的是为了读取来自套接字的数据，
+							//所以我们还必须将 SocketChannel 注册到 Selector上
 							SocketChannel channel = serverSocketChannel.accept();
 							if (channel == null) {
 								continue;
@@ -134,7 +135,7 @@ public class ChatServer implements Runnable{
 			}
 		} else if (str.indexOf("exit_") != -1) {
 			String username = str.substring(5);
-			usernames.add(username);
+			usernames.remove(username);
 			key.attach("close");
 			key.interestOps(SelectionKey.OP_WRITE);
 			//获取选择器上的已选择key 并更新
