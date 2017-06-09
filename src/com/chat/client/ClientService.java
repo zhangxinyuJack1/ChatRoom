@@ -6,14 +6,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class ClientService {
-	
-	//服务器Ip
+
+	// 服务器Ip
 	private static final String HOST = "127.0.0.1";
-	//服务器监听的 端口号
+	// 服务器监听的 端口号
 	private static final int PORT = 19999;
-	//客户端 服务端连接的 socket通道
+	// 客户端 服务端连接的 socket通道
 	private static SocketChannel sc;
-	
+
 	private static Object lock = new Object();
 
 	private static ClientService service;
@@ -33,8 +33,8 @@ public class ClientService {
 
 	private ClientService() throws IOException {
 		sc = SocketChannel.open();
-		sc.configureBlocking(false);//非阻塞
-		sc.connect(new InetSocketAddress(HOST, PORT));//连接
+		sc.configureBlocking(false);// 非阻塞
+		sc.connect(new InetSocketAddress(HOST, PORT));// 连接
 	}
 
 	public void sendMsg(String msg) {

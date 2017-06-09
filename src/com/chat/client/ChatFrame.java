@@ -20,8 +20,8 @@ public class ChatFrame {
 	private JTextArea readContext = new JTextArea(18, 30);// 显示消息文本框
 	private JTextArea writeContext = new JTextArea(6, 30);// 发送消息文本框
 
-	private DefaultListModel modle = new DefaultListModel<String>();// 用户列表模型
-	private JList list = new JList(modle);// 用户列表
+	private DefaultListModel<String> modle = new DefaultListModel<String>();// 用户列表模型
+	private JList<String> list = new JList<String>(modle);// 用户列表
 
 	private JButton btnSend = new JButton("发送");// 发送消息按钮
 	private JButton btnClose = new JButton("关闭");// 关闭聊天窗口按钮
